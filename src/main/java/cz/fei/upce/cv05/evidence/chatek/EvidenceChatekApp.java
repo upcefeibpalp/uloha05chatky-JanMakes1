@@ -43,10 +43,7 @@ public class EvidenceChatekApp {
             switch (operace) {
                 case VYPIS_CHATEK -> {
 
-                    // Projdi cele pole od <0, VELIKOST) a vypis kazdy index
-                    for (int i = 0; i < chatky.length; i++) {
-                        System.out.println("Chatka [" + (i + 1) + "] = " + chatky[i]);
-                    }
+                    vypisChatky(chatky);
                 }
 
                 case VYPIS_KONKRETNI_CHATKU -> {
@@ -59,10 +56,9 @@ public class EvidenceChatekApp {
                     // Zaporne nebo cislo vetsi nez je pocet chatek je nevalidni vstup
                     if (cisloChatky < 0 || cisloChatky >= chatky.length) {
                         System.err.println("Tato chatka neexistuje");
-                        continue; // Zacni novou iteraci cyklu
-                    }
-
+                    }else{
                     System.out.println("Chatka [" + (cisloChatky + 1) + "] = " + chatky[cisloChatky]);
+                    }
                 }
 
                 case PRIDANI_NAVSTEVNIKU -> {
@@ -99,7 +95,31 @@ public class EvidenceChatekApp {
                 }
 
                 case ODEBRANI_NAVSTEVNIKU -> {
-                    // TODO
+
+                    System.out.print("Zadej cislo chatky: ");
+
+                    int cisloChatky = scanner.nextInt() - 1;
+
+                    if (cisloChatky < 0 || cisloChatky >= chatky.length) {
+                        System.err.println("Tato chatka neexistuje");
+                        continue;
+                    }
+
+                    System.out.print("Zadej pocet odhlasujicich se navstevniku navstevniku: ");
+                    int pocetNavstevniku = scanner.nextInt();
+
+                    if (pocetNavstevniku <= 0 || pocetNavstevniku > chatky[cisloChatky]) {
+                        System.err.println("Neplatna hodnota pro pocet navstevniku");
+                        continue; // Zacni novou iteraci cyklu
+                    }
+
+                    if ((chatky[cisloChatky] - pocetNavstevniku) < 0) {
+                        System.err.println("Tolik navstevniku v chatce neni");
+                        continue;
+                    }
+
+                    chatky[cisloChatky] = chatky[cisloChatky - pocetNavstevniku];
+                
                 }
 
                 case CELKOVA_OBSAZENOST -> {
@@ -107,7 +127,7 @@ public class EvidenceChatekApp {
                 }
 
                 case VYPIS_PRAZDNE_CHATKY -> {
-                    // TODO
+
                 }
 
                 case KONEC_PROGRAMU -> {
@@ -119,5 +139,12 @@ public class EvidenceChatekApp {
                 }
             }
         } while (operace != 0);
+    }
+
+    private static void vypisChatky(int[] chatky) {
+        // Projdi cele pole od <0, VELIKOST) a vypis kazdy index
+        for (int i = 0; i < chatky.length; i++) {
+            System.out.println("Chatka [" + (i + 1) + "] = " + chatky[i]);
+        }
     }
 }
